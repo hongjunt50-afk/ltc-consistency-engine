@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>长护险服务过程一致性核验引擎 · 演示</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.65 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+     color:#1f2328;background:#f6f8fa}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px 64px}
+header{background:linear-gradient(135deg,#1f3a5f,#2c6e9b);color:#fff;padding:56px 0 48px;margin-bottom:32px}
+header .wrap{padding-bottom:0}
+h1{font-size:30px;margin:0 0 12px;font-weight:700}
+.sub{opacity:.9;font-size:17px;margin:0}
+.lead{background:#fff;border:1px solid #d0d7de;border-radius:10px;padding:24px 28px;margin-bottom:28px}
+h2{font-size:20px;margin:36px 0 14px;padding-bottom:8px;border-bottom:1px solid #d0d7de}
+.cards{display:flex;gap:16px;flex-wrap:wrap;margin:20px 0}
+.card{flex:1 1 200px;background:#fff;border:1px solid #d0d7de;border-radius:10px;padding:18px 20px}
+.card .n{font-size:32px;font-weight:700;line-height:1.1}
+.card .l{font-size:13px;color:#57606a;margin-top:6px}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:14px;
+      border:1px solid #d0d7de;border-radius:8px;overflow:hidden}
+th{background:#eef2f6;text-align:left;padding:10px 12px;font-weight:600;border-bottom:1px solid #d0d7de}
+td{padding:10px 12px;border-bottom:1px solid #eaeef2;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:2px 9px;border-radius:11px;font-size:12px;font-weight:600;white-space:nowrap}
+.rule{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;color:#57606a}
+.clause{color:#57606a;font-size:13px}
+code{background:#eff2f5;padding:1px 6px;border-radius:4px;font-size:13px}
+pre{background:#0d1117;color:#e6edf3;padding:18px 20px;border-radius:10px;overflow-x:auto;font-size:13.5px;line-height:1.6}
+footer{color:#57606a;font-size:13px;margin-top:48px;padding-top:20px;border-top:1px solid #d0d7de}
+.flow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:18px 0;font-size:14px}
+.flow span{background:#fff;border:1px solid #d0d7de;border-radius:20px;padding:7px 15px}
+.flow b{color:#8b949e}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>长护险服务过程一致性核验引擎</h1>
+  <p class="sub">把 2026 版官方文书编译成可执行、可解释、可核对的规则 · 每条结论都指向具体条款</p>
+</div></header>
+
+<div class="wrap">
+
+<div class="lead">
+  <strong>这个页面在演示什么。</strong>
+  机构交来的服务记录、护理服务计划、人员资质放在一张 Excel 里，本工具逐条比对，
+  把"服务项目不在国家 36 项目录""同一护理员同一时段两条记录""非持证人员做了医疗护理"
+  这类问题挑出来，按硬违规 / 需复核 / 数据质量分级，并给出依据的文书条款。
+  下面是仓库自带<b>合成示例台账</b>的真实运行结果（人物、机构、地址均为虚构）。
+</div>
+
+<div class="flow">
+  <span>机构 Excel 台账</span><b>→</b><span>字段归一与别名匹配</span><b>→</b>
+  <span>15 条一致性规则</span><b>→</b><span>异常清单 + 条款依据</span>
+</div>
+
+<div class="cards">
+  <div class="card"><div class="n">5</div><div class="l">条服务记录</div></div>
+  <div class="card"><div class="n" style="color:#d93025">9</div><div class="l">硬违规（E）</div></div>
+  <div class="card"><div class="n" style="color:#b26a00">9</div><div class="l">需复核（W）</div></div>
+  <div class="card"><div class="n" style="color:#1a73e8">1</div><div class="l">数据质量（I）</div></div>
+</div>
+
+<h2>异常清单（19 条）</h2>
+<table>
+<thead><tr><th style="width:88px">严重度</th><th style="width:190px">规则</th>
+<th style="width:92px">对象</th><th>问题描述</th><th style="width:32%">文书依据</th></tr></thead>
+<tbody>
+<tr><td><span class="badge" style="color:#d93025;background:#fce8e6">硬违规</span></td><td class='rule'>E_NO_SIGN</td><td>R-0003</td><td>缺参保人员（家属）签名</td><td class='clause'>长期护理保险服务记录单·签字确认栏（参保人员（家属）签名）</td></tr><tr><td><span class="badge" style="color:#d93025;background:#fce8e6">硬违规</span></td><td class='rule'>E_UNKNOWN_SERVICE</td><td>R-0004</td><td>服务项目「洗脚」不在国家 36 项目录内</td><td class='clause'>国家长期护理保险服务项目目录（试行）医保发〔2025〕24号 凡例·三（准入法管理）</td></tr><tr><td><span class="badge" style="color:#d93025;background:#fce8e6">硬违规</span></td><td class='rule'>E_BAD_TIME</td><td>R-0004</td><td>服务结束时间 09:30 不晚于开始时间 10:00</td><td class='clause'>长期护理保险服务记录单·服务记录栏（服务开始时间/服务结束时间）</td></tr><tr><td><span class="badge" style="color:#d93025;background:#fce8e6">硬违规</span></td><td class='rule'>E_NO_SIGN</td><td>R-0004</td><td>缺护理人员签字</td><td class='clause'>长期护理保险服务记录单·签字确认栏（护理人员签字）</td></tr><tr><td><span class="badge" style="color:#d93025;background:#fce8e6">硬违规</span></td><td class='rule'>E_QUAL_MISMATCH</td><td>R-0005</td><td>资质「其他」不属于持证护理人员，却执行了医疗护理类项目 ['吸痰']</td><td class='clause'>长期护理保险服务记录单·护理人员资质；质量评价表·其他类第 1 项（非持证人员提供医疗护理直接判不合格）</td></tr><tr><td><span class="badge" style="color:#d93025;background:#fce8e6">硬违规</span></td><td class='rule'>E_ABNORMAL_NO_REMEDY</td><td>R-0005</td><td>记录了异常情况（照护对象诉胸闷…）但缺处理措施</td><td class='clause'>长期护理保险服务记录单·异常情况说明/处理措施/处理时间</td></tr><tr><td><span class="badge" style="color:#d93025;background:#fce8e6">硬违规</span></td><td class='rule'>E_ABNORMAL_NO_REMEDY</td><td>R-0005</td><td>记录了异常情况（照护对象诉胸闷…）但缺处理时间</td><td class='clause'>长期护理保险服务记录单·异常情况说明/处理措施/处理时间</td></tr><tr><td><span class="badge" style="color:#d93025;background:#fce8e6">硬违规</span></td><td class='rule'>E_CAREGIVER_OVERLAP</td><td>R-0001</td><td>护理人员 王某 在 2026-10-05 的 R-0001 与 R-0002 时段重叠</td><td class='clause'>长期护理保险服务记录单·服务开始/结束时间；巡查记录表·费用结算（不得重复收取）</td></tr><tr><td><span class="badge" style="color:#d93025;background:#fce8e6">硬违规</span></td><td class='rule'>E_ELDER_OVERLAP</td><td>R-0002</td><td>参保人 张某某 在 2026-10-05 同时段有两条服务记录（R-0001 / R-0002）</td><td class='clause'>长期护理保险服务记录单·一服务一记录；巡查记录表·费用结算（不得重复收取）</td></tr><tr><td><span class="badge" style="color:#b26a00;background:#fff4e5">需复核</span></td><td class='rule'>W_QUAL_SCOPE_REVIEW</td><td>R-0003</td><td>资质「养老护理员」执行医疗护理类项目 ['吸痰']，需核对该地区是否允许其执业范围</td><td class='clause'>长期护理保险服务记录单·护理人员资质；巡查记录表·机构管理（人员类型与服务范围相匹配）</td></tr><tr><td><span class="badge" style="color:#b26a00;background:#fff4e5">需复核</span></td><td class='rule'>W_LATE_ENTRY</td><td>R-0003</td><td>服务日期 2026-10-06，录入日期 2026-10-12，滞后 6 天</td><td class='clause'>长期护理保险服务记录单（按次如实填写）；长期护理服务月度汇总表（按月归集）</td></tr><tr><td><span class="badge" style="color:#b26a00;background:#fff4e5">需复核</span></td><td class='rule'>W_SERVICE_TYPE_MISMATCH</td><td>R-0004</td><td>记录服务类型「机构护理」与备案护理方式「居家护理」不一致</td><td class='clause'>长期护理保险服务记录单·服务类型；失能人员档案信息表·护理方式</td></tr><tr><td><span class="badge" style="color:#b26a00;background:#fff4e5">需复核</span></td><td class='rule'>W_FREQ_SHORT</td><td>张某某</td><td>张某某 在 2026-10 的「协助进食/水及指导（含管饲饮食）」执行 2 次，低于计划 30 次</td><td class='clause'>护理服务计划表·建议频次/确定频次；长期护理服务月度汇总表</td></tr><tr><td><span class="badge" style="color:#b26a00;background:#fff4e5">需复核</span></td><td class='rule'>W_FREQ_SHORT</td><td>张某某</td><td>张某某 在 2026-10 的「协助排泄」执行 1 次，低于计划 30 次</td><td class='clause'>护理服务计划表·建议频次/确定频次；长期护理服务月度汇总表</td></tr><tr><td><span class="badge" style="color:#b26a00;background:#fff4e5">需复核</span></td><td class='rule'>W_FREQ_SHORT</td><td>张某某</td><td>张某某 在 2026-10 的「擦浴」执行 1 次，低于计划 8 次</td><td class='clause'>护理服务计划表·建议频次/确定频次；长期护理服务月度汇总表</td></tr><tr><td><span class="badge" style="color:#b26a00;background:#fff4e5">需复核</span></td><td class='rule'>W_FREQ_SHORT</td><td>张某某</td><td>张某某 在 2026-10 的「生命体征测量」执行 0 次，低于计划 4 次</td><td class='clause'>护理服务计划表·建议频次/确定频次；长期护理服务月度汇总表</td></tr><tr><td><span class="badge" style="color:#b26a00;background:#fff4e5">需复核</span></td><td class='rule'>W_FREQ_SHORT</td><td>李某某</td><td>李某某 在 2026-10 的「协助进食/水及指导（含管饲饮食）」执行 1 次，低于计划 30 次</td><td class='clause'>护理服务计划表·建议频次/确定频次；长期护理服务月度汇总表</td></tr><tr><td><span class="badge" style="color:#b26a00;background:#fff4e5">需复核</span></td><td class='rule'>W_FREQ_SHORT</td><td>李某某</td><td>李某某 在 2026-10 的「吸痰」执行 2 次，低于计划 15 次</td><td class='clause'>护理服务计划表·建议频次/确定频次；长期护理服务月度汇总表</td></tr><tr><td><span class="badge" style="color:#1a73e8;background:#e8f0fe">数据质量</span></td><td class='rule'>I_ITEM_COUNT_MISMATCH</td><td>R-0004</td><td>服务项目数合计填 3，实际列了 2 项</td><td class='clause'>长期护理保险服务记录单·服务记录栏（服务项目数合计）</td></tr>
+</tbody>
+</table>
+
+<h2>规则不是自己编的</h2>
+<p>全部来自《长期护理保险服务管理文书（2026 年版）》与《国家长期护理保险服务项目目录（试行）》（医保发〔2025〕24 号）。
+抽取脚本从官方 PDF 直接读，并在抽取时做四类自校验，任一失败就不产出文件：</p>
+<ul>
+  <li><b>数量</b>：36 项 = 生活照护 20 + 医疗护理 16</li>
+  <li><b>序号连续</b>：1..20 与 1..16 不许断号</li>
+  <li><b>三处副本逐字一致</b>：同样 36 项在「护理服务建议表」「护理服务计划表」「月度汇总表」各出现一次，三种排版三种解析路径，得到的名称必须完全相同</li>
+  <li><b>分区求和</b>：巡查记录表 8 个分区的声明分值必须相加为 100，且分区内各检查项累加等于该区声明总分</li>
+</ul>
+
+<h2>另外两块能力</h2>
+<p><b>巡查记录表评分</b>：8 个分区、30 个检查项、满分 100。</p>
+<table>
+<thead><tr><th style="width:220px">分区</th><th style="width:100px">检查项</th><th style="width:100px">分区分值</th></tr></thead>
+<tbody><tr><td>机构管理</td><td>9</td><td>27</td></tr><tr><td>服务管理</td><td>5</td><td>20</td></tr><tr><td>费用结算</td><td>2</td><td>10</td></tr><tr><td>信息管理</td><td>5</td><td>15</td></tr><tr><td>档案管理</td><td>2</td><td>6</td></tr><tr><td>风险防范</td><td>3</td><td>4</td></tr><tr><td>违法违规行为查处</td><td>3</td><td>8</td></tr><tr><td>综合评价</td><td>1</td><td>10</td></tr></tbody>
+</table>
+<p><b>质量评价算分</b>：三类各自得分率均 ≥ 60% 才合格；命中「打骂参保人」「非持证人员提供医疗护理」直接判不合格。</p>
+<table>
+<thead><tr><th style="width:70px">表</th><th>评价类别</th><th style="width:100px">项数</th><th style="width:100px">满分</th></tr></thead>
+<tbody><tr><td>A</td><td>生活照护类</td><td>20</td><td>100</td></tr><tr><td>B</td><td>医疗护理类</td><td>16</td><td>80</td></tr><tr><td>C</td><td>其他类</td><td>5</td><td>25</td></tr></tbody>
+</table>
+
+<h2>自己跑一遍</h2>
+<pre>git clone &lt;本仓库&gt; &amp;&amp; cd ltc-consistency-engine
+pip install openpyxl
+
+# 一条命令：导入 → 核验 → 出异常清单
+python ltc_excel.py review examples/示例台账.xlsx
+
+# 拿空白模板（含 36 项目录对照表）
+python ltc_excel.py template 导入模板.xlsx
+
+# 跑测试
+python -m unittest discover -s tests</pre>
+
+<footer>
+  仓库内两份示例数据全部为合成数据，不含任何真实患者信息。
+  本项目不做失能等级评定，不涉及疾病诊断。
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,3 @@
+# 仅工具脚本需要；ltc_rules.py 与测试零第三方依赖
+pymupdf>=1.24      # tools/extract_ruleset.py 解析官方 PDF
+openpyxl>=3.1      # ltc_excel.py 读写 Excel
