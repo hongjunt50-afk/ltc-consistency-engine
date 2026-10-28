@@ -3,3 +3,7 @@ __pycache__/
 .venv/
 data/source/*.pdf
 .scratch/
+
+# `ltc_excel.py review` 在输入同目录生成的运行产物
+examples/示例台账_case.json
+examples/示例台账_异常清单.xlsx
