@@ -1,7 +1,7 @@
 # 长护险服务过程一致性核验引擎 · LTC Consistency Engine
 
-[![tests](https://github.com/hongjunt50-afk/ltc-consistency-engine/actions/workflows/tests.yml/badge.svg)](https://github.com/hongjunt50-afk/ltc-consistency-engine/actions/workflows/tests.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 
 把《长期护理保险服务管理文书（2026 年版）》和《国家长期护理保险服务项目目录（试行）》编译成**可执行、可解释、可核对**的核验规则：输入机构的服务记录、护理计划、人员资质，输出异常清单，每条结论都指向具体文书条款。
 
