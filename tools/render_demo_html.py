@@ -161,7 +161,8 @@ def build_html() -> str:
 </table>
 
 <h2>自己跑一遍</h2>
-<pre>git clone &lt;本仓库&gt; &amp;&amp; cd ltc-consistency-engine
+<pre>git clone https://github.com/hongjunt50-afk/ltc-consistency-engine.git
+cd ltc-consistency-engine
 pip install openpyxl
 
 # 一条命令：导入 → 核验 → 出异常清单

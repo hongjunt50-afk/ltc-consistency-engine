@@ -77,6 +77,9 @@ python ltc_excel.py review examples/示例台账.xlsx
 ## 快速开始
 
 ```bash
+git clone https://github.com/hongjunt50-afk/ltc-consistency-engine.git
+cd ltc-consistency-engine
+
 # 1. 从官方 PDF 抽取规则（自校验，失败不产出）
 python tools/extract_ruleset.py
 
